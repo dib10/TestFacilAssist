@@ -42,3 +42,52 @@ BEGIN TRY
 END
 GO
 
+-- Procedure AtualizarCliente
+CREATE PROCEDURE sp_AtualizarCliente
+    @Id INT,
+    @Nome VARCHAR(150),
+    @Cpf VARCHAR(11),
+    @DataNascimento DATE,
+    @Sexo CHAR(1),
+    @SituacaoClienteId INT
+AS
+BEGIN
+
+    BEGIN TRY
+        UPDATE Cliente
+        SET Nome = @Nome,
+            Cpf = @Cpf,
+            DataNascimento = @DataNascimento,
+            Sexo = @Sexo,
+            SituacaoClienteId = @SituacaoClienteId
+        WHERE Id = @Id;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+
+-- Procedure ExcluirCliente
+
+CREATE PROCEDURE sp_ExcluirCliente
+    @Id INT
+AS
+BEGIN
+    BEGIN TRY
+        DELETE FROM Cliente WHERE Id = @Id;
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END
+GO
+
+-- Procedure ListarClientes
+CREATE PROCEDURE sp_ListarClientes
+AS
+BEGIN
+    SELECT C.*, S.Descricao AS SituacaoDescricao
+    FROM Cliente C
+    INNER JOIN SituacaoCliente S ON C.SituacaoClienteId = S.Id;
+END
+GO
