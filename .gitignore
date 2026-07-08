@@ -1,0 +1,15 @@
+# Arquivos de configurações locais do Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Pastas de compilação e build
+bin/
+obj/
+
+# Arquivos de log e cache temporários
+*.log
+
+# Arquivos de publicação
+Publish/
