@@ -1,0 +1,38 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using FacilAssist.API.Models;
+using FacilAssist.API.Services;
+using System;
+
+
+namespace FacilAssist.API.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ClientesController : ControllerBase
+    {
+        private readonly IClienteService _clienteService;
+        public ClientesController(IClienteService clienteService)
+        {
+            _clienteService = clienteService;
+        }
+
+        [HttpPost]
+        public IActionResult InserirCliente([FromBody] Cliente cliente)
+        {
+            try
+            {
+                _clienteService.Inserir(cliente);
+
+                return StatusCode(201, new { mensagem = "Cliente cadastrado com sucesso!" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { erro = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { erro = "O erro foi do nosso lado do servidor, tente mais tarde ", detalhe = ex.Message });
+            }
+        }
+    }
+}

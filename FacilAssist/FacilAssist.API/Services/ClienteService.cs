@@ -2,12 +2,27 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FacilAssist.API.Models;
+using FacilAssist.API.Repositories;
 
 namespace FacilAssist.API.Services
 {
 
     public class ClienteService : IClienteService
     {
+
+        private readonly IClienteRepository _clienteRepository;
+
+        public ClienteService(IClienteRepository clienteRepository)
+        {
+            _clienteRepository = clienteRepository;
+        }
+
+        public void Inserir(Cliente cliente)
+        {
+            ValidarCliente(cliente);
+            _clienteRepository.Inserir(cliente); //salva no banco
+        }
+
         public void ValidarCliente(Cliente cliente)
         {
             if (string.IsNullOrWhiteSpace(cliente.Nome))
