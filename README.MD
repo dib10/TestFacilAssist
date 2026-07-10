@@ -153,6 +153,21 @@ A tela permite:
 
 ## Como rodar o projeto
 
+O repositório está disponível em:
+
+[dib10/TestFacilAssist](https://github.com/dib10/TestFacilAssist)
+
+Para baixar pelo terminal:
+
+```powershell
+git clone https://github.com/dib10/TestFacilAssist.git
+cd TestFacilAssist
+```
+
+Também dá para baixar pelo botão **Code > Download ZIP** no GitHub, caso não queira usar `git clone`.
+
+### Rodando pelo terminal
+
 Primeiro, crie o banco no SQL Server executando o script:
 
 ```text
@@ -202,6 +217,59 @@ Ordem recomendada:
 1. SQL Server
 2. API
 3. Web
+```
+
+### Rodando pelo VS Code
+
+No VS Code, eu abriria a pasta raiz do repositório:
+
+```text
+TestFacilAssist
+```
+
+Depois, usaria dois terminais integrados.
+
+No primeiro terminal:
+
+```powershell
+dotnet run --project FacilAssist/FacilAssist.API
+```
+
+No segundo terminal:
+
+```powershell
+dotnet run --project FacilAssist/FacilAssist.Web
+```
+
+Com os dois projetos rodando, os endereços principais ficam:
+
+```text
+API/Swagger: http://localhost:5206/swagger
+Web:         http://localhost:5255
+```
+
+### Rodando pelo Visual Studio
+
+No Visual Studio, abra a solução:
+
+```text
+FacilAssist/FacilAssist.slnx
+```
+
+Depois disso, é possível iniciar os projetos separadamente, primeiro a API e depois o Web. Outra opção é configurar os dois projetos para iniciarem juntos:
+
+```text
+FacilAssist.API
+FacilAssist.Web
+```
+
+A API precisa estar rodando para a aplicação web conseguir listar, cadastrar, editar e excluir clientes.
+
+Endereços esperados:
+
+```text
+API/Swagger: http://localhost:5206/swagger
+Web:         http://localhost:5255
 ```
 
 ## Dificuldades e decisões durante o desenvolvimento
