@@ -290,6 +290,7 @@ No front, optei por Razor Pages porque a proposta do teste pedia uma página web
 - Melhorar o retorno quando uma alteração ou exclusão usa um id que não existe.
 - Criar filtros de busca na listagem.
 - Adicionar paginação caso o volume de clientes cresça.
+- Criar uma camada de constantes ou enum para as situações usadas no código, evitando valores mágicos como `1`, `2` e `3`. Mesmo assim, eu manteria a tabela `SituacaoCliente` no banco, porque ela foi um requisito do teste e garante a relação por FK.
 - Melhorar a interface visual da aplicação web.
 
 ## DER
