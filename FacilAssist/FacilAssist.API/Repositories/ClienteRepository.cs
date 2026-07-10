@@ -1,7 +1,6 @@
-﻿using System.Data;
+using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using FacilAssist.API.Models;
 
 namespace FacilAssist.API.Repositories
@@ -9,16 +8,17 @@ namespace FacilAssist.API.Repositories
     public class ClienteRepository : IClienteRepository
     {
         private readonly string _connectionString;
+
         public ClienteRepository(IConfiguration configuration)
         {
-            //pego a string de con do appsettings.Development.json
             _connectionString = configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string não encontrada.");
         }
-        //Inserir
+
         public void Inserir(Cliente cliente)
         {
-            using IDbConnection dbConnection = new SqlConnection(_connectionString); //abre e fecha a conexão automaticamente
+            using IDbConnection dbConnection = new SqlConnection(_connectionString);
+
             var parametros = new DynamicParameters();
             parametros.Add("@Nome", cliente.Nome);
             parametros.Add("@Cpf", cliente.Cpf);
@@ -26,8 +26,6 @@ namespace FacilAssist.API.Repositories
             parametros.Add("@Sexo", cliente.Sexo);
             parametros.Add("@SituacaoClienteId", cliente.SituacaoClienteId);
 
-
-            //chamando a procedure
             dbConnection.Execute(
                 "sp_InserirCliente",
                 parametros,
@@ -35,7 +33,6 @@ namespace FacilAssist.API.Repositories
             );
         }
 
-        //Listar
         public IEnumerable<Cliente> Listar()
         {
             using IDbConnection dbConnection = new SqlConnection(_connectionString);
@@ -46,7 +43,6 @@ namespace FacilAssist.API.Repositories
             );
         }
 
-        // Atualizar
         public void Atualizar(Cliente cliente)
         {
             using IDbConnection dbConnection = new SqlConnection(_connectionString);
@@ -66,7 +62,6 @@ namespace FacilAssist.API.Repositories
             );
         }
 
-        // Excluir
         public void Excluir(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_connectionString);

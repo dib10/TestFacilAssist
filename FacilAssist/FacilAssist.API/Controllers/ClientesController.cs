@@ -44,7 +44,6 @@ namespace FacilAssist.API.Controllers
             }
         }
 
-
         [HttpGet]
         public IActionResult ListarClientes()
         {
@@ -106,7 +105,7 @@ namespace FacilAssist.API.Controllers
             {
                 _clienteService.Excluir(id);
 
-                return Ok(new { mensagem = "Cliente excluído com sucesso!" });
+                return Ok(new { mensagem = "Cliente excluido com sucesso!" });
             }
             catch (ArgumentException ex)
             {
