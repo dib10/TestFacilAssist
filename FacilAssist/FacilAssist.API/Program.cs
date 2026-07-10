@@ -1,4 +1,5 @@
 using FacilAssist.API.Middlewares;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,13 @@ builder.Services.AddScoped<FacilAssist.API.Services.IClienteService, FacilAssist
 builder.Services.AddScoped<FacilAssist.API.Repositories.IClienteRepository, FacilAssist.API.Repositories.ClienteRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 

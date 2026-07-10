@@ -16,6 +16,11 @@ namespace FacilAssist.API.Controllers
             _clienteService = clienteService;
         }
 
+        /// <summary>
+        /// Cadastra um novo cliente.
+        /// </summary>
+        /// <param name="input">Dados do cliente que será cadastrado.</param>
+        /// <returns>Mensagem de confirmação do cadastro.</returns>
         [HttpPost]
         public IActionResult InserirCliente([FromBody] ClienteInputDto input)
         {
@@ -33,6 +38,10 @@ namespace FacilAssist.API.Controllers
             return StatusCode(201, new { mensagem = "Cliente cadastrado com sucesso!" });
         }
 
+        /// <summary>
+        /// Lista todos os clientes cadastrados.
+        /// </summary>
+        /// <returns>Lista de clientes com a descrição da situação.</returns>
         [HttpGet]
         public IActionResult ListarClientes()
         {
@@ -52,6 +61,12 @@ namespace FacilAssist.API.Controllers
             return Ok(resultado);
         }
 
+        /// <summary>
+        /// Atualiza os dados de um cliente existente.
+        /// </summary>
+        /// <param name="id">Identificador do cliente.</param>
+        /// <param name="input">Dados atualizados do cliente.</param>
+        /// <returns>Mensagem de confirmação da atualização.</returns>
         [HttpPut("{id}")]
         public IActionResult AtualizarCliente(int id, [FromBody] ClienteUpdateDto input)
         {
@@ -69,6 +84,11 @@ namespace FacilAssist.API.Controllers
             return Ok(new { mensagem = "Cliente atualizado com sucesso!" });
         }
 
+        /// <summary>
+        /// Exclui um cliente pelo identificador.
+        /// </summary>
+        /// <param name="id">Identificador do cliente.</param>
+        /// <returns>Mensagem de confirmação da exclusão.</returns>
         [HttpDelete("{id}")]
         public IActionResult ExcluirCliente(int id)
         {
