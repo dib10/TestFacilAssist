@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using FacilAssist.API.DTOs;
 using FacilAssist.API.Models;
 using FacilAssist.API.Services;
-using System;
-
 
 namespace FacilAssist.API.Controllers
 {
@@ -11,16 +10,26 @@ namespace FacilAssist.API.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly IClienteService _clienteService;
+
         public ClientesController(IClienteService clienteService)
         {
             _clienteService = clienteService;
         }
 
         [HttpPost]
-        public IActionResult InserirCliente([FromBody] Cliente cliente)
+        public IActionResult InserirCliente([FromBody] ClienteInputDto input)
         {
             try
             {
+                var cliente = new Cliente
+                {
+                    Nome = input.Nome,
+                    Cpf = input.Cpf,
+                    DataNascimento = input.DataNascimento,
+                    Sexo = input.Sexo,
+                    SituacaoClienteId = input.SituacaoClienteId
+                };
+
                 _clienteService.Inserir(cliente);
 
                 return StatusCode(201, new { mensagem = "Cliente cadastrado com sucesso!" });
@@ -31,7 +40,7 @@ namespace FacilAssist.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { erro = "O erro foi do nosso lado do servidor, tente mais tarde ", detalhe = ex.Message });
+                return StatusCode(500, new { erro = "O erro foi do nosso lado do servidor, tente mais tarde.", detalhe = ex.Message });
             }
         }
     }
