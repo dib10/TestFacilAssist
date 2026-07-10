@@ -43,5 +43,32 @@ namespace FacilAssist.API.Controllers
                 return StatusCode(500, new { erro = "O erro foi do nosso lado do servidor, tente mais tarde.", detalhe = ex.Message });
             }
         }
+
+
+        [HttpGet]
+        public IActionResult ListarClientes()
+        {
+            try
+            {
+                var clientes = _clienteService.Listar();
+
+                var resultado = clientes.Select(cliente => new ClienteOutputDto
+                {
+                    Id = cliente.Id,
+                    Nome = cliente.Nome,
+                    Cpf = cliente.Cpf,
+                    DataNascimento = cliente.DataNascimento,
+                    Sexo = cliente.Sexo,
+                    SituacaoClienteId = cliente.SituacaoClienteId,
+                    SituacaoDescricao = cliente.SituacaoDescricao
+                });
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { erro = "Ops! Erro ao listar clientes.", detalhe = ex.Message });
+            }
+        }
     }
 }

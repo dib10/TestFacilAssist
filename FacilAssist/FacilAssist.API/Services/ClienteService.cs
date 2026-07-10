@@ -23,6 +23,13 @@ namespace FacilAssist.API.Services
             _clienteRepository.Inserir(cliente); //salva no banco
         }
 
+        public IEnumerable<Cliente> Listar()
+        {
+            return _clienteRepository.Listar();
+        }
+
+
+
         public void ValidarCliente(Cliente cliente)
         {
             if (string.IsNullOrWhiteSpace(cliente.Nome))

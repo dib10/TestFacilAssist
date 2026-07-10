@@ -6,5 +6,6 @@ namespace FacilAssist.API.Services
     {
         void ValidarCliente(Cliente cliente);
         void Inserir(Cliente cliente);
+        IEnumerable<Cliente> Listar();
     }
 }

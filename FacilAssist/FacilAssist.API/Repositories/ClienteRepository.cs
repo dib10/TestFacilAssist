@@ -16,6 +16,7 @@ namespace FacilAssist.API.Repositories
             _connectionString = configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string não encontrada.");
         }
+        //Inserir
         public void Inserir(Cliente cliente)
         {
             using IDbConnection dbConnection = new SqlConnection(_connectionString); //abre e fecha a conexão automaticamente
@@ -31,6 +32,17 @@ namespace FacilAssist.API.Repositories
             dbConnection.Execute(
                 "sp_InserirCliente",
                 parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        //Listar
+        public IEnumerable<Cliente> Listar()
+        {
+            using IDbConnection dbConnection = new SqlConnection(_connectionString);
+
+            return dbConnection.Query<Cliente>(
+                "sp_ListarClientes",
                 commandType: CommandType.StoredProcedure
             );
         }
