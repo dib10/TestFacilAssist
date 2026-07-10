@@ -278,6 +278,8 @@ Uma dificuldade no começo foi a instalação do SQL Server 2022. A instalação
 
 Durante o desenvolvimento da API, também percebi que usar diretamente o model `Cliente` nas requisições poderia misturar responsabilidades. Um exemplo foi o campo de descrição da situação do cliente, que vem da listagem com `JOIN`, mas não faz sentido ser enviado no cadastro. Por isso criei DTOs para entrada, atualização e saída.
 
+Para a validação de CPF, implementei a regra matemática diretamente no service, usando o cálculo dos dígitos verificadores. Para um projeto maior, eu consideraria usar uma biblioteca já consolidada para esse tipo de validação, reduzindo o risco de erro e facilitando a manutenção.
+
 Outra decisão foi manter interfaces para services e repositories. Para um projeto pequeno, poderia funcionar com classes concretas, mas preferi usar interfaces para deixar mais clara a separação entre contrato e implementação, além de facilitar manutenção e testes no futuro.
 
 No front, optei por Razor Pages porque a proposta do teste pedia uma página web simples. Pensei que trazer um front mais pesado criaria mais complexidade do que benefício para esse caso.
