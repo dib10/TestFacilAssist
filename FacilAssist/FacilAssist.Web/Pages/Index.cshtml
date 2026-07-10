@@ -1,0 +1,127 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<section class="page-heading">
+    <div>
+        <h1>Clientes</h1>
+    </div>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(Model.MensagemSucesso))
+{
+    <div class="alert alert-success" role="alert">@Model.MensagemSucesso</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.MensagemErro))
+{
+    <div class="alert alert-danger" role="alert">@Model.MensagemErro</div>
+}
+
+<section class="form-panel">
+    <form method="post" asp-page-handler="Salvar" class="row g-3">
+        <input type="hidden" asp-for="Formulario.Id" />
+
+        <div class="col-12 col-lg-4">
+            <label asp-for="Formulario.Nome" class="form-label">Nome</label>
+            <input asp-for="Formulario.Nome" class="form-control" maxlength="150" />
+            <span asp-validation-for="Formulario.Nome" class="text-danger small"></span>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-2">
+            <label asp-for="Formulario.Cpf" class="form-label">CPF</label>
+            <input asp-for="Formulario.Cpf" class="form-control" inputmode="numeric" maxlength="11" />
+            <span asp-validation-for="Formulario.Cpf" class="text-danger small"></span>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-2">
+            <label asp-for="Formulario.DataNascimento" class="form-label">Data de nascimento</label>
+            <input asp-for="Formulario.DataNascimento" class="form-control" type="date" />
+            <span asp-validation-for="Formulario.DataNascimento" class="text-danger small"></span>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-2">
+            <label asp-for="Formulario.Sexo" class="form-label">Sexo</label>
+            <select asp-for="Formulario.Sexo" class="form-select">
+                <option value="">Selecione</option>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+            </select>
+            <span asp-validation-for="Formulario.Sexo" class="text-danger small"></span>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-2">
+            <label asp-for="Formulario.SituacaoClienteId" class="form-label">Situação</label>
+            <select asp-for="Formulario.SituacaoClienteId" class="form-select">
+                <option value="1">Ativo</option>
+                <option value="2">Inativo</option>
+                <option value="3">Bloqueado</option>
+            </select>
+        </div>
+
+        <div class="col-12 actions-row">
+            <button type="submit" class="btn btn-primary">
+                @(Model.EstaEditando ? "Atualizar" : "Cadastrar")
+            </button>
+
+            @if (Model.EstaEditando)
+            {
+                <a asp-page="/Index" class="btn btn-outline-secondary">Cancelar</a>
+            }
+        </div>
+    </form>
+</section>
+
+<section class="table-section">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Nascimento</th>
+                    <th>Sexo</th>
+                    <th>Situação</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Clientes.Count == 0)
+                {
+                    <tr>
+                        <td colspan="6" class="text-muted text-center py-4">Nenhum cliente cadastrado.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var cliente in Model.Clientes)
+                    {
+                        <tr>
+                            <td>@cliente.Nome</td>
+                            <td>@cliente.Cpf</td>
+                            <td>@cliente.DataNascimento.ToString("dd/MM/yyyy")</td>
+                            <td>@cliente.Sexo</td>
+                            <td>@cliente.SituacaoDescricao</td>
+                            <td class="text-end">
+                                <div class="row-actions">
+                                    <form method="post" asp-page-handler="Editar" asp-route-id="@cliente.Id">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Editar</button>
+                                    </form>
+                                    <form method="post" asp-page-handler="Excluir" asp-route-id="@cliente.Id">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Excluir este cliente?');">Excluir</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
