@@ -98,5 +98,24 @@ namespace FacilAssist.API.Controllers
                 return StatusCode(500, new { erro = "Ops! Erro ao atualizar cliente.", detalhe = ex.Message });
             }
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult ExcluirCliente(int id)
+        {
+            try
+            {
+                _clienteService.Excluir(id);
+
+                return Ok(new { mensagem = "Cliente excluído com sucesso!" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { erro = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { erro = "Ops! Erro ao excluir cliente.", detalhe = ex.Message });
+            }
+        }
     }
 }

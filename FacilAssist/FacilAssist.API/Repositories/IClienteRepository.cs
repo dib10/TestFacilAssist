@@ -7,6 +7,7 @@ namespace FacilAssist.API.Repositories
         IEnumerable<Cliente> Listar();
 
         void Atualizar(Cliente cliente);
+        void Excluir(int id);
     }
 
 }

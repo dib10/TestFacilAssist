@@ -3,7 +3,6 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using FacilAssist.API.Models;
-using System.Data.Common;
 
 namespace FacilAssist.API.Repositories
 {
@@ -62,6 +61,21 @@ namespace FacilAssist.API.Repositories
 
             dbConnection.Execute(
                 "sp_AtualizarCliente",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        // Excluir
+        public void Excluir(int id)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_connectionString);
+
+            var parametros = new DynamicParameters();
+            parametros.Add("@Id", id);
+
+            dbConnection.Execute(
+                "sp_ExcluirCliente",
                 parametros,
                 commandType: CommandType.StoredProcedure
             );

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using FacilAssist.API.Models;
 using FacilAssist.API.Repositories;
 
@@ -37,6 +36,14 @@ namespace FacilAssist.API.Services
 
             ValidarCliente(cliente);
             _clienteRepository.Atualizar(cliente);
+        }
+
+        public void Excluir(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("O id do cliente é inválido.");
+
+            _clienteRepository.Excluir(id);
         }
 
 

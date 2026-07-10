@@ -9,5 +9,6 @@ namespace FacilAssist.API.Services
         IEnumerable<Cliente> Listar();
 
         void Atualizar(int id, Cliente cliente);
+        void Excluir(int id);
     }
 }
