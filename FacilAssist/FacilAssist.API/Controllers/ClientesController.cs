@@ -70,5 +70,33 @@ namespace FacilAssist.API.Controllers
                 return StatusCode(500, new { erro = "Ops! Erro ao listar clientes.", detalhe = ex.Message });
             }
         }
+
+        [HttpPut("{id}")]
+        public IActionResult AtualizarCliente(int id, [FromBody] ClienteUpdateDto input)
+        {
+            try
+            {
+                var cliente = new Cliente
+                {
+                    Nome = input.Nome,
+                    Cpf = input.Cpf,
+                    DataNascimento = input.DataNascimento,
+                    Sexo = input.Sexo,
+                    SituacaoClienteId = input.SituacaoClienteId
+                };
+
+                _clienteService.Atualizar(id, cliente);
+
+                return Ok(new { mensagem = "Cliente atualizado com sucesso!" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { erro = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { erro = "Ops! Erro ao atualizar cliente.", detalhe = ex.Message });
+            }
+        }
     }
 }

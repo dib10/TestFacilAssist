@@ -46,5 +46,25 @@ namespace FacilAssist.API.Repositories
                 commandType: CommandType.StoredProcedure
             );
         }
+
+        // Atualizar
+        public void Atualizar(Cliente cliente)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_connectionString);
+
+            var parametros = new DynamicParameters();
+            parametros.Add("@Id", cliente.Id);
+            parametros.Add("@Nome", cliente.Nome);
+            parametros.Add("@Cpf", cliente.Cpf);
+            parametros.Add("@DataNascimento", cliente.DataNascimento);
+            parametros.Add("@Sexo", cliente.Sexo);
+            parametros.Add("@SituacaoClienteId", cliente.SituacaoClienteId);
+
+            dbConnection.Execute(
+                "sp_AtualizarCliente",
+                parametros,
+                commandType: CommandType.StoredProcedure
+            );
+        }
     }
 }

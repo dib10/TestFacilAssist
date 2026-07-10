@@ -28,6 +28,17 @@ namespace FacilAssist.API.Services
             return _clienteRepository.Listar();
         }
 
+        public void Atualizar(int id, Cliente cliente)
+        {
+            if (id <= 0)
+                throw new ArgumentException("O id do cliente é inválido.");
+
+            cliente.Id = id;
+
+            ValidarCliente(cliente);
+            _clienteRepository.Atualizar(cliente);
+        }
+
 
 
         public void ValidarCliente(Cliente cliente)

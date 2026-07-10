@@ -5,6 +5,8 @@ namespace FacilAssist.API.Repositories
     {
         void Inserir(Cliente cliente);
         IEnumerable<Cliente> Listar();
+
+        void Atualizar(Cliente cliente);
     }
 
 }
