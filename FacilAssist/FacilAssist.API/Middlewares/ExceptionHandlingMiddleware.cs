@@ -70,7 +70,6 @@ namespace FacilAssist.API.Middlewares
             }
 
             _logger.LogWarning(
-                ex,
                 "Requisicao rejeitada com status {StatusCode} em {Metodo} {Caminho}: {Mensagem}",
                 (int)statusCode,
                 context.Request.Method,
