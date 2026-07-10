@@ -10,10 +10,12 @@ namespace FacilAssist.API.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly IClienteService _clienteService;
+        private readonly ILogger<ClientesController> _logger;
 
-        public ClientesController(IClienteService clienteService)
+        public ClientesController(IClienteService clienteService, ILogger<ClientesController> logger)
         {
             _clienteService = clienteService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace FacilAssist.API.Controllers
             };
 
             _clienteService.Inserir(cliente);
+            _logger.LogInformation("Cliente cadastrado pela API.");
 
             return StatusCode(201, new { mensagem = "Cliente cadastrado com sucesso!" });
         }
@@ -56,7 +59,9 @@ namespace FacilAssist.API.Controllers
                 Sexo = cliente.Sexo,
                 SituacaoClienteId = cliente.SituacaoClienteId,
                 SituacaoDescricao = cliente.SituacaoDescricao
-            });
+            }).ToList();
+
+            _logger.LogInformation("Listagem de clientes retornou {Quantidade} registros.", resultado.Count);
 
             return Ok(resultado);
         }
@@ -80,6 +85,7 @@ namespace FacilAssist.API.Controllers
             };
 
             _clienteService.Atualizar(id, cliente);
+            _logger.LogInformation("Cliente {ClienteId} atualizado pela API.", id);
 
             return Ok(new { mensagem = "Cliente atualizado com sucesso!" });
         }
@@ -93,6 +99,7 @@ namespace FacilAssist.API.Controllers
         public IActionResult ExcluirCliente(int id)
         {
             _clienteService.Excluir(id);
+            _logger.LogInformation("Cliente {ClienteId} excluido pela API.", id);
 
             return Ok(new { mensagem = "Cliente excluido com sucesso!" });
         }

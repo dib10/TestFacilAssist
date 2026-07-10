@@ -7,11 +7,16 @@ namespace FacilAssist.API.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _environment;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, IWebHostEnvironment environment)
+        public ExceptionHandlingMiddleware(
+            RequestDelegate next,
+            IWebHostEnvironment environment,
+            ILogger<ExceptionHandlingMiddleware> logger)
         {
             _next = next;
             _environment = environment;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -30,6 +35,8 @@ namespace FacilAssist.API.Middlewares
         {
             var (statusCode, mensagem) = MapearExcecao(ex);
 
+            RegistrarExcecao(context, ex, statusCode, mensagem);
+
             var resposta = statusCode == HttpStatusCode.InternalServerError
                 ? new
                 {
@@ -46,6 +53,30 @@ namespace FacilAssist.API.Middlewares
             context.Response.StatusCode = (int)statusCode;
 
             return context.Response.WriteAsJsonAsync(resposta);
+        }
+
+        private void RegistrarExcecao(HttpContext context, Exception ex, HttpStatusCode statusCode, string mensagem)
+        {
+            if (statusCode == HttpStatusCode.InternalServerError)
+            {
+                _logger.LogError(
+                    ex,
+                    "Erro interno ao processar {Metodo} {Caminho}.",
+                    context.Request.Method,
+                    context.Request.Path
+                );
+
+                return;
+            }
+
+            _logger.LogWarning(
+                ex,
+                "Requisicao rejeitada com status {StatusCode} em {Metodo} {Caminho}: {Mensagem}",
+                (int)statusCode,
+                context.Request.Method,
+                context.Request.Path,
+                mensagem
+            );
         }
 
         private static (HttpStatusCode StatusCode, string Mensagem) MapearExcecao(Exception ex)
